@@ -18,12 +18,6 @@ class ProductDetailsCubit extends Cubit<ProductDetailsStates>{
     emit(ProductDetailsLoading());
     final response = await _productDetailsUseCase.getProductDetails(productId);
     if(response.message != "Product not found."){
-      // check if product has price assign it initially to total price
-      if(response.data["price"] != null){
-        if(cartAndProductsProvider.totalPrice == 0){
-          cartAndProductsProvider.incrementTotalPrice(response.data["price"].toDouble());
-        }
-      }
       emit(ProductDetailsSuccess(productDetails: ProductDetails.fromJson(response.data)));
       cartAndProductsProvider.setSelectedProduct(ProductDetails.fromJson(response.data));
     }else{

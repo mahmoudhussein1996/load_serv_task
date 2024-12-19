@@ -34,7 +34,10 @@ class CartScreen extends StatelessWidget {
                 )),
                 const SizedBox(height: 40),
                 CustomButton(title: "Checkout",secondTitle: "${cartAndProductsProvider.totalPrice} EGP",horizontalPadding: 20,width: context.width * .9,
-                hasSecondText: true,backgroundColor: CustomColors.orangeColor ,onTap: (){}),
+                hasSecondText: true,backgroundColor: CustomColors.orangeColor ,onTap: (){
+                    cartAndProductsProvider.showSendDialog(context);
+                    Navigator.pop(context);
+                }),
                 const SizedBox(height: 10,),
                 CustomButton(title: "Delete All",horizontalPadding: 20,width: context.width * .9,
                     hasSecondText: false,backgroundColor: CustomColors.pinkColor ,onTap: ()=> cartAndProductsProvider.clearProductsInCart()),

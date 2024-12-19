@@ -79,7 +79,7 @@ class ProductDetailsUpdateWidget extends StatelessWidget {
                     }).toList(),
                   ),
                   const SizedBox(height: 20,),
-                  TextDefaultWidget(title: "Addition ( select ${productInCart.salads?.length}):", fontWeight: FontWeight.w700, fontSize: 15),
+                  TextDefaultWidget(title: "Addition ( select ${productInCart.productSaladCount}):", fontWeight: FontWeight.w700, fontSize: 15),
                   const SizedBox(height: 10,),
                   Wrap(
                     // spacing: 8.0,

@@ -7,6 +7,7 @@ import 'package:load_serv_task/core/shared_widgets/general_appbar_widget.dart';
 import 'package:load_serv_task/core/theme/colors.dart';
 import 'package:load_serv_task/features/category/presentation/cubit/category_cubit.dart';
 import 'package:load_serv_task/features/category/presentation/cubit/category_states.dart';
+import 'package:load_serv_task/features/category/presentation/screens/widgets/floating_button_widget.dart';
 import 'package:load_serv_task/features/category/presentation/screens/widgets/product_item.dart';
 
 class CategoryDetailsScreen extends StatelessWidget {
@@ -87,6 +88,7 @@ class CategoryDetailsScreen extends StatelessWidget {
 
                   ],
                 ),
+                floatingActionButton: const FloatingButtonWidget(),
               ),
               PositionedDirectional(top: 150,start: 0,end: 0,
                   child: Container(width: 132, height: 132,decoration: BoxDecoration(

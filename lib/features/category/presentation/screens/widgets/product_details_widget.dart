@@ -40,229 +40,164 @@ class ProductDetailsWidget extends StatelessWidget {
                 color: CustomColors.whiteColor,
                 height: context.height * .8,
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      IconButton(
-                          onPressed: () {
-                            cartAndProductsProvider.resetData();
-                            Navigator.pop(context);
-                          },
-                          icon: const Icon(
-                            Icons.clear,
-                            size: 27,
-                          )),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: CustomColors.whiteColor,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(.1),
-                                spreadRadius: 0,
-                                blurRadius: 4,
-                                offset: const Offset(
-                                    0, 4), // changes position of shadow
-                              ),
-                            ]),
-                        child: Row(
-                          children: [
-                            ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Image.network(
-                                  state.productDetails.image ?? "",
-                                  width: 132,
-                                  height: 132,
-                                  fit: BoxFit.fill,
-                                )),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  width: 177,
-                                  child: TextDefaultWidget(
-                                    maxLines: 2,
-                                    title:
-                                        state.productDetails.description ?? "",
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 12,
-                                    color: Colors.black,
-                                  ),
+                child: Scaffold(
+                  body: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 20,),
+                        IconButton(onPressed: () {
+                              cartAndProductsProvider.resetData();
+                              Navigator.pop(context);},
+                            icon: const Icon(Icons.clear, size: 27,)),
+                        const SizedBox(height: 20,),
+                        Container(
+                          decoration: BoxDecoration(color: CustomColors.whiteColor,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(.1),
+                                  spreadRadius: 0,
+                                  blurRadius: 4,
+                                  offset: const Offset(0, 4), // changes position of shadow
                                 ),
-                                const SizedBox(
-                                  height: 36,
-                                ),
-                                Row(
-                                  children: [
-                                    state.productDetails.isSingle == true
-                                        ? Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              TextDefaultWidget(
-                                                  title:
-                                                      "${state.productDetails.priceBeforeDiscount} EGP",
-                                                  fontSize: 12,
-                                                  lineThrough: true,
-                                                  fontWeight: FontWeight.w400),
-                                              const SizedBox(
-                                                height: 6,
-                                              ),
-                                              TextDefaultWidget(
-                                                  title:
-                                                      "${state.productDetails.price} EGP",
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w400),
-                                            ],
-                                          )
-                                        : const SizedBox(),
-                                    const SizedBox(
-                                      width: 100,
+                              ]),
+                          child: Row(
+                            children: [
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.network(
+                                    state.productDetails.image ?? "",
+                                    width: 132,
+                                    height: 132,
+                                    fit: BoxFit.fill,
+                                  )),
+                              const SizedBox(width: 10,),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: 177,
+                                    child: TextDefaultWidget(
+                                      maxLines: 2,
+                                      title: state.productDetails.description ?? "",
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 12,
+                                      color: Colors.black,
                                     ),
-                                    IncrementWidget(
-                                      counter:cartAndProductsProvider.selectedProduct.productCount,
-                                      plusOnTap: () => cartAndProductsProvider
-                                          .incrementProductCounter(cartAndProductsProvider.selectedProduct),
-                                      minusOnTap: () => cartAndProductsProvider
-                                          .decrementProductCounter(cartAndProductsProvider.selectedProduct),
-                                    )
-                                  ],
-                                )
-                              ],
-                            )
-                          ],
+                                  ),
+                                  const SizedBox(height: 36,),
+                                  Row(
+                                    children: [
+                                      state.productDetails.isSingle == true
+                                          ? Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                TextDefaultWidget(
+                                                    title: "${state.productDetails.priceBeforeDiscount} EGP",
+                                                    fontSize: 12,
+                                                    lineThrough: true,
+                                                    fontWeight: FontWeight.w400),
+                                                const SizedBox(height: 6,),
+                                                TextDefaultWidget(
+                                                    title: "${state.productDetails.price} EGP",
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w400),
+                                              ],
+                                            )
+                                          : const SizedBox(),
+                                      const SizedBox(width: 100,),
+                                      IncrementWidget(
+                                        counter:cartAndProductsProvider.selectedProduct.productCount,
+                                        plusOnTap: () => cartAndProductsProvider
+                                            .incrementProductCounter(cartAndProductsProvider.selectedProduct),
+                                        minusOnTap: () => cartAndProductsProvider
+                                            .decrementProductCounter(cartAndProductsProvider.selectedProduct),
+                                      )
+                                    ],
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      state.productDetails.weights!.isNotEmpty
-                          ? const TextDefaultWidget(
-                              title: "Weights",
-                              fontWeight: FontWeight.w700,
-                              fontSize: 15)
-                          : const SizedBox(),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Wrap(
-                        spacing: 12,
-                        runSpacing: 6,
-                        children: cartAndProductsProvider.selectedProduct.weights!.map((weight) {
-                          return InkWell(
-                              onTap: () =>
-                                  cartAndProductsProvider.selectWeight(cartAndProductsProvider.selectedProduct.weights!,weight),
-                              child: WeightItem(
-                                weight: weight,
-                              ));
-                        }).toList(),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      TextDefaultWidget(
-                          title:
-                              "Addition ( select ${state.productDetails.salads?.length}):",
-                          fontWeight: FontWeight.w700,
-                          fontSize: 15),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Wrap(
-                        // spacing: 8.0,
-                        runSpacing: 4.0,
-                        children: cartAndProductsProvider.selectedProduct.salads!.map((salad) {
-                          return SaladItem(
-                            salad: salad,
-                          );
-                        }).toList(),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      const TextDefaultWidget(
-                          title: "Extras :",
-                          fontWeight: FontWeight.w700,
-                          fontSize: 15),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Wrap(
-                        spacing: 8.0,
-                        runSpacing: 4.0,
-                        children: cartAndProductsProvider.selectedProduct.extraItems!.map((extra) {
-                          return ExtraItemWidget(
-                            extraItem: extra,
-                          );
-                        }).toList(),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      CustomButton(
-                          title:
-                              openForAddToCart ? "Add To Cart" : "Save Changes",
-                          secondTitle:
-                              "${cartAndProductsProvider.selectedProduct.productTotalPrice} EGP",
-                          hasSecondText: true,
-                          backgroundColor: CustomColors.orangeColor,
-                          horizontalPadding: 20,
-                          onTap: () {
-                            if (openForAddToCart == true) {
-                              if (cartAndProductsProvider
-                                      .selectedProduct.productTotalPrice !=
-                                  0.0) {
-                                // Check if the product already exists in the cart
-                                bool productExists = cartAndProductsProvider
-                                    .cartProductsList
-                                    .any(
-                                  (product) =>
-                                      product.id ==
-                                      cartAndProductsProvider
-                                          .selectedProduct.id,
-                                );
-
-                                if (!productExists) {
-                                  // Add a  the selected product to the cart
-                                  cartAndProductsProvider.cartProductsList.add(
-                                    cartAndProductsProvider.selectedProduct,
-                                  );
-                                  cartAndProductsProvider.incrementTotalPrice(
-                                      cartAndProductsProvider
-                                          .selectedProduct.productTotalPrice);
-                                }
-
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const CartScreen()),
-                                );
-                              } else {
-                                Navigator.pop(context);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content:
-                                          Text("Please select a weight first")),
-                                );
-                              }
-                            } else {
-                              Navigator.pop(context);
-                            }
-                          }),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                    ],
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        if(state.productDetails.weights!.isNotEmpty)
+                             const TextDefaultWidget(
+                                title: "Weights",
+                                fontWeight: FontWeight.w700,
+                                fontSize: 15),
+                        if(state.productDetails.weights!.isNotEmpty)
+                        const SizedBox(height: 10,),
+                        if(state.productDetails.weights!.isNotEmpty)
+                        Wrap(
+                          spacing: 12,
+                          runSpacing: 6,
+                          children: cartAndProductsProvider.selectedProduct.weights!.map((weight) {
+                            return InkWell(
+                                onTap: () =>
+                                    cartAndProductsProvider.selectWeight(cartAndProductsProvider.selectedProduct.weights!,weight),
+                                child: WeightItem(
+                                  weight: weight,
+                                ));
+                          }).toList(),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        TextDefaultWidget(
+                            title: "Addition ( select ${(cartAndProductsProvider.selectedProduct.productSaladCount)}):",
+                            fontWeight: FontWeight.w700,
+                            fontSize: 15),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Wrap(
+                          // spacing: 8.0,
+                          runSpacing: 4.0,
+                          children: cartAndProductsProvider.selectedProduct.salads!.map((salad) {
+                            return SaladItem(
+                              salad: salad,
+                            );
+                          }).toList(),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const TextDefaultWidget(
+                            title: "Extras :",
+                            fontWeight: FontWeight.w700,
+                            fontSize: 15),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Wrap(
+                          spacing: 8.0,
+                          runSpacing: 4.0,
+                          children: cartAndProductsProvider.selectedProduct.extraItems!.map((extra) {
+                            return ExtraItemWidget(
+                              extraItem: extra,
+                            );
+                          }).toList(),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        CustomButton(
+                            title: "Add To Cart",
+                            secondTitle: "${cartAndProductsProvider.selectedProduct.productTotalPrice} EGP",
+                            hasSecondText: true,
+                            backgroundColor: CustomColors.orangeColor,
+                            horizontalPadding: 20,
+                            onTap: () => cartAndProductsProvider.validateProductDetails(context)),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );

@@ -8,14 +8,15 @@ class ProductDetails {
   final int? points;
   final int? price;
   final int? priceBeforeDiscount;
-  int productCount;
-  double productTotalPrice;
-  int productSaladCount;
-  String selectedWeight;
-  String selectedExtra;
+  final int? numOfSalad;
   final List<ExtraItem>? extraItems;
   final List<Salad>? salads;
   final List<Weight>? weights;
+  int productCount;
+  double productTotalPrice;
+  bool haveNote;
+  int productSaladCount;
+  String note;
 
   ProductDetails({
     this.id,
@@ -26,14 +27,15 @@ class ProductDetails {
     this.points,
     this.price,
     this.priceBeforeDiscount,
+    this.numOfSalad,
     this.productCount = 1,
     this.productTotalPrice = 0.0,
-    this.productSaladCount = 1,
-    this.selectedWeight = "",
-    this.selectedExtra = "",
+    this.productSaladCount = 0,
     this.extraItems,
     this.salads,
     this.weights,
+    this.haveNote = false,
+    this.note = "",
   });
 
   factory ProductDetails.fromJson(Map<String, dynamic> json) => ProductDetails(
@@ -44,6 +46,7 @@ class ProductDetails {
     isSingle: json["is_single"],
     points: json["points"],
     priceBeforeDiscount: json["price_before_discount"],
+    numOfSalad: json["number_of_salad"],
     price: json["price"],
     extraItems: json["extra_items"] == null ? [] : List<ExtraItem>.from(json["extra_items"]!.map((x) => ExtraItem.fromJson(x))),
     salads: json["salads"] == null ? [] : List<Salad>.from(json["salads"]!.map((x) => Salad.fromJson(x))),
@@ -77,7 +80,7 @@ class Salad {
     this.name,
     this.price,
     this.image,
-    this.saladCounter = 1,
+    this.saladCounter = 0,
   });
 
   factory Salad.fromJson(Map<String, dynamic> json) => Salad(

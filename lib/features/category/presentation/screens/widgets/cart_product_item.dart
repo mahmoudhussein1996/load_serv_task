@@ -51,28 +51,33 @@ class CartProductItem extends StatelessWidget {
                       children: [
                         SizedBox(width: 190,child: TextDefaultWidget(title:  product.description!, maxLines: 2,fontWeight: FontWeight.w700, fontSize: 14,)),
                         const SizedBox(height: 10,),
-                        product.selectedWeight == "" ? const SizedBox():
+                        product.isSingle == true ? const SizedBox():
                         Row(children: [
                           const TextDefaultWidget(title: "Weight: ", fontWeight: FontWeight.w600, fontSize: 12,),
-                          TextDefaultWidget(title: product.selectedWeight , color: CustomColors.greyColor, fontWeight: FontWeight.w500, fontSize: 12,),
+                          TextDefaultWidget(title: cartAndProductsProvider.getSelectedWeightName(product) ?? "" , color: CustomColors.greyColor, fontWeight: FontWeight.w500, fontSize: 12,),
                         ],),
                         const SizedBox(height: 10,),
-                        Row(children: [
+                        Row(crossAxisAlignment: CrossAxisAlignment.start,children: [
                           const TextDefaultWidget(title: "Salads: ", fontWeight: FontWeight.w600, fontSize: 12,),
-                          TextDefaultWidget(title: "${product.productSaladCount} items", color: CustomColors.greyColor, fontWeight: FontWeight.w500, fontSize: 12,),
+                          SizedBox(width: 160,child: TextDefaultWidget(title: cartAndProductsProvider.getSalads(product.salads ?? []), color: CustomColors.greyColor, fontWeight: FontWeight.w500, fontSize: 12,)),
                         ],),
                         const SizedBox(height: 10,),
                         Row(crossAxisAlignment: CrossAxisAlignment.start,children: [
                           const TextDefaultWidget(title: "Extras: ", fontWeight: FontWeight.w600, fontSize: 12,),
-                          SizedBox(width: 160,child: TextDefaultWidget(title: product.selectedExtra, color: CustomColors.greyColor, fontWeight: FontWeight.w500, fontSize: 12,)),
+                          SizedBox(width: 160,child: TextDefaultWidget(title: cartAndProductsProvider.getExtras(product.extraItems ?? []), color: CustomColors.greyColor, fontWeight: FontWeight.w500, fontSize: 12,)),
                         ],),
                         const SizedBox(height: 10,),
                         Row(children: [
                           TextDefaultWidget(title: "${product.productTotalPrice} EGP", fontWeight: FontWeight.w600, fontSize: 12,),
                           const SizedBox(width: 20,),
-                          InkWell(onTap: ()=> showAddNoteDialog(context),child: Image.asset("assets/images/edit.png", width: 32, height: 32,)),
+                          InkWell(onTap: ()=> showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            builder: (context) => ProductDetailsWidget(openForAddToCart: false, productInCart: product,),
+                          ),child: Image.asset("assets/images/edit.png", width: 32, height: 32,)),
                           const SizedBox(width: 20,),
-                          InkWell(onTap: ()=>  showSendDialog(context),child: Image.asset("assets/images/message.png", width: 28, height: 28,)),
+                          InkWell(onTap: ()=>  showAddNoteDialog(context),child: Image.asset(product.haveNote ?
+                          "assets/images/message_filled.png" : "assets/images/message.png", width: 28, height: 28,)),
 
                         ],),
 
@@ -110,44 +115,37 @@ class CartProductItem extends StatelessWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: CustomColors.whiteColor,
-          title: const Center(child: TextDefaultWidget(title: "Add Note", fontWeight: FontWeight.w700, fontSize: 14,)),
-          content: ConstrainedBox(
-            constraints: BoxConstraints(minWidth: context.width), // Adjust the maximum width as needed),
-            child: TextFormField(maxLines: 5, decoration: InputDecoration(
-            fillColor: CustomColors.textFieldColor, filled: true,enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Colors.transparent)),disabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Colors.transparent)))),
-          ),
-          actions: [
-            CustomButton(title: "Cancel", width: context.width * .25,
-            backgroundColor: CustomColors.greyColor,onTap: ()=> Navigator.pop(context)),
-            const SizedBox(width: 40,),
-            CustomButton(title: "Confirm", width: context.width * .25,
-            backgroundColor: CustomColors.orangeColor,onTap: ()=> Navigator.pop(context)),
-          ],
+        return Consumer<CartAndProductsProvider>(
+          builder: (context, cartAndProductsProvider, _) {
+            return AlertDialog(
+              backgroundColor: CustomColors.whiteColor,
+              title: const Center(child: TextDefaultWidget(title: "Add Note", fontWeight: FontWeight.w700, fontSize: 14,)),
+              content: ConstrainedBox(
+                constraints: BoxConstraints(minWidth: context.width), // Adjust the maximum width as needed),
+                child: TextFormField(
+                controller: cartAndProductsProvider.noteController..text =
+                cartAndProductsProvider.selectedProduct.haveNote ?  cartAndProductsProvider.selectedProduct.note : "",
+                maxLines: 5,
+                decoration: InputDecoration(
+                fillColor: CustomColors.textFieldColor, filled: true,enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Colors.transparent)),disabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Colors.transparent)))),
+              ),
+              actions: [
+                CustomButton(title: "Cancel", width: context.width * .25,
+                backgroundColor: CustomColors.greyColor,onTap: ()=> Navigator.pop(context)),
+                const SizedBox(width: 40,),
+                CustomButton(title: "Confirm", width: context.width * .25,
+                backgroundColor: CustomColors.orangeColor,onTap: (){
+                 cartAndProductsProvider.setNoteForProduct(product,cartAndProductsProvider.noteController.text);
+                  Navigator.pop(context);
+                }),
+              ],
+            );
+          }
         );
       },
     );
   }
 
-  showSendDialog(BuildContext context){
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: CustomColors.whiteColor,
-          title: const Center(child: TextDefaultWidget(title: "Success", color: Colors.green,fontWeight: FontWeight.w700, fontSize: 14,)),
-          content: SizedBox(height: context.height * .1,child: const Center(child: TextDefaultWidget(title: "Order sent successfully",fontWeight: FontWeight.w700, fontSize: 14,))),
-          actions: [
-            Center(
-              child: CustomButton(title: "Confirm", width: context.width * .25,
-                  backgroundColor: CustomColors.orangeColor,onTap: ()=> Navigator.pop(context)),
-            ),
-          ],
-        );
-      },
-    );
-  }
 }
